@@ -22,13 +22,12 @@
 
   function wireLightbox(gallery) {
     var media = dialog.querySelector('.dwd-lb-media');
-    var caption = dialog.querySelector('.dwd-lb-caption');
-    var prev = dialog.querySelector('.dwd-lb-prev');
-    var next = dialog.querySelector('.dwd-lb-next');
     var close = dialog.querySelector('.dwd-lb-close');
     var tiles = Array.prototype.slice.call(gallery.querySelectorAll('.dwd-tile'));
     var current = -1;
     var lastFocus = null;
+    var touchStart = null;
+    var suppressBackdropCloseUntil = 0;
 
     function itemFromTile(tile) {
       var img = tile.querySelector('img');
@@ -36,7 +35,7 @@
         type: tile.getAttribute('data-type') || 'image',
         src: tile.getAttribute('data-src') || (img && img.getAttribute('src')),
         poster: tile.getAttribute('data-poster') || '',
-        caption: tile.getAttribute('data-caption') || (img && img.getAttribute('alt')) || ''
+        alt: (img && img.getAttribute('alt')) || ''
       };
     }
 
@@ -44,7 +43,6 @@
       current = index;
       var item = itemFromTile(tiles[index]);
       media.replaceChildren();
-      caption.textContent = item.caption;
 
       if (item.type === 'video') {
         var video = document.createElement('video');
@@ -60,14 +58,10 @@
       } else {
         var img = document.createElement('img');
         img.src = item.src;
-        img.alt = item.caption;
+        img.alt = item.alt;
         img.decoding = 'async';
         media.appendChild(img);
       }
-
-      var multiple = tiles.length > 1;
-      prev.hidden = !multiple;
-      next.hidden = !multiple;
     }
 
     function step(delta) {
@@ -96,12 +90,42 @@
     });
 
     close.addEventListener('click', function () { dialog.close(); });
-    prev.addEventListener('click', function () { step(-1); });
-    next.addEventListener('click', function () { step(1); });
 
     dialog.addEventListener('click', function (event) {
-      if (event.target === dialog) dialog.close();
+      if (event.target === dialog && Date.now() > suppressBackdropCloseUntil) dialog.close();
     });
+
+    // Horizontal swipe navigation. Listeners stay passive so vertical page
+    // scrolling and native video controls keep their normal behaviour.
+    dialog.addEventListener('touchstart', function (event) {
+      if (event.touches.length !== 1) { touchStart = null; return; }
+      var target = event.target;
+      if (target && target.closest && target.closest('button, a, input, select, textarea')) {
+        touchStart = null;
+        return;
+      }
+      var touch = event.touches[0];
+      if (target && target.tagName === 'VIDEO') {
+        var box = target.getBoundingClientRect();
+        var controlZone = Math.min(64, box.height * 0.3);
+        if (touch.clientY > box.bottom - controlZone) { touchStart = null; return; }
+      }
+      touchStart = { x: touch.clientX, y: touch.clientY };
+    }, { passive: true });
+
+    dialog.addEventListener('touchend', function (event) {
+      if (!touchStart || !event.changedTouches.length) { touchStart = null; return; }
+      var start = touchStart;
+      touchStart = null;
+      var touch = event.changedTouches[0];
+      var dx = touch.clientX - start.x;
+      var dy = touch.clientY - start.y;
+      if (Math.abs(dx) < 45 || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
+      suppressBackdropCloseUntil = Date.now() + 500;
+      step(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
+    dialog.addEventListener('touchcancel', function () { touchStart = null; }, { passive: true });
 
     dialog.addEventListener('keydown', function (event) {
       if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }

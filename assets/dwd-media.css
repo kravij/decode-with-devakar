@@ -104,20 +104,6 @@
   font-size: 11px;
   padding-left: 2px;
 }
-.dwd-tile-label {
-  position: absolute;
-  z-index: 1;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 8px 9px;
-  background: linear-gradient(transparent, rgba(31, 32, 30, .7));
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
-
 /* Lightbox */
 .dwd-lightbox {
   border: 0;
@@ -156,6 +142,7 @@
   width: auto;
   height: auto;
   object-fit: contain;
+  touch-action: pan-y;
 }
 .dwd-lb-media video {
   max-width: min(960px, 92vw);
@@ -163,15 +150,6 @@
   width: auto;
   height: auto;
   background: #000;
-}
-.dwd-lb-caption {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: #d9d5cc;
-  text-align: center;
-  margin: 0;
 }
 .dwd-lb-button {
   position: absolute;
@@ -200,19 +178,6 @@
   right: 18px;
   font-size: 22px;
 }
-.dwd-lb-prev {
-  top: 50%;
-  left: 14px;
-  transform: translateY(-50%);
-}
-.dwd-lb-next {
-  top: 50%;
-  right: 14px;
-  transform: translateY(-50%);
-}
-.dwd-lb-button[hidden] {
-  display: none;
-}
 
 @media (max-width: 760px) {
   .dwd-media {
@@ -228,12 +193,6 @@
   }
   .dwd-lightbox-inner {
     padding: 64px 12px 28px;
-  }
-  .dwd-lb-prev {
-    left: 6px;
-  }
-  .dwd-lb-next {
-    right: 6px;
   }
   .dwd-lb-button {
     width: 36px;
