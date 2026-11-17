@@ -240,3 +240,16 @@
     height: 36px;
   }
 }
+
+/* Supplied hero cover render: keep the existing cover box, dimensions,
+   transform and shadow; fill it with the replacement artwork. */
+.book-cover-replaced {
+  padding: 0;
+  background: #ffffff;
+}
+.book-cover-replaced img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
