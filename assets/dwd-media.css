@@ -212,3 +212,144 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* Desktop hero book-cover overlap correction:
+   Ensures the book cover does not overlap the surrounding visual labels,
+   while preserving mobile layout and hero dimensions. */
+@media (min-width: 761px) {
+  .hero-visual {
+    min-height: 610px;
+  }
+  .label-top {
+    top: 8px;
+    right: 0;
+  }
+  .label-bottom {
+    bottom: 8px;
+    left: 0;
+  }
+}
+
+/* Book ordering options styling (Amazon primary, WhatsApp secondary) */
+.hero-actions {
+  margin: 24px 0 28px;
+}
+.order-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.btn-order {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  line-height: 1.2;
+  transition: all .2s ease;
+  white-space: nowrap;
+}
+.btn-amazon {
+  background: var(--dark, #1f201e);
+  color: #f4f1eb;
+  border: 1px solid var(--dark, #1f201e);
+  box-shadow: 0 2px 6px rgba(31, 32, 30, 0.08);
+}
+.btn-amazon:hover {
+  background: var(--red, #d94b38);
+  border-color: var(--red, #d94b38);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(217, 75, 56, 0.2);
+}
+.btn-whatsapp {
+  background: transparent;
+  color: var(--ink, #1a1918);
+  border: 1px solid var(--line, #d9d5cc);
+  font-weight: 500;
+}
+.btn-whatsapp:hover {
+  background: #ebe6dc;
+  border-color: var(--ink, #1a1918);
+  transform: translateY(-1px);
+}
+.amazon-regional {
+  margin-top: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--muted, #66635d);
+}
+.amazon-regional a {
+  color: var(--ink, #1a1918);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color .15s ease;
+}
+.amazon-regional a:hover {
+  color: var(--red, #d94b38);
+}
+.amazon-regional .sep {
+  margin: 0 4px;
+  color: #aaa59c;
+}
+
+/* Lower order section options */
+.lower-order-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.btn-light.btn-amazon {
+  background: #f4f1eb;
+  color: var(--dark, #1f201e);
+  border-color: #f4f1eb;
+}
+.btn-light.btn-amazon:hover {
+  background: #e26356;
+  border-color: #e26356;
+  color: #ffffff;
+}
+.btn-light.btn-whatsapp {
+  background: transparent;
+  color: #f4f1eb;
+  border-color: rgba(244, 241, 235, 0.3);
+}
+.btn-light.btn-whatsapp:hover {
+  background: rgba(244, 241, 235, 0.08);
+  border-color: #f4f1eb;
+}
+.light-regional {
+  color: #aaa8a1;
+}
+.light-regional a {
+  color: #f4f1eb;
+}
+.light-regional a:hover {
+  color: #e26356;
+}
+.light-regional .sep {
+  color: #66645e;
+}
+
+@media (max-width: 760px) {
+  .hero-actions {
+    margin: 22px 0 24px;
+  }
+  .order-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn-order {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+}
